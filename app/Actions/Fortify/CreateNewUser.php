@@ -1,0 +1,40 @@
+<?php
+//this php file is Connected to Resources/views/auth/register.blade.php
+namespace App\Actions\Fortify;
+
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Laravel\Jetstream\Jetstream;
+
+class CreateNewUser implements CreatesNewUsers
+{
+    use PasswordValidationRules;
+
+    /**
+     * Validate and create a newly registered user.
+     *
+     * @param  array<string, string>  $input
+     */
+    public function create(array $input): User
+    {
+        Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => $this->passwordRules(),
+            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+        ])->validate();
+//it is connected to the register files 
+// the first name is name of database feild but another one if came from html file form rigister 
+        return User::create([
+
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'phone' => $input['phone'],
+            'address' => $input['address'],
+            'password' => Hash::make($input['password']),
+        ]);
+        //we are connected them together in php file
+    }
+}
