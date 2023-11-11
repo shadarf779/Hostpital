@@ -4,9 +4,9 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-             
+
                 <!-- Naviation Links -->
-                
+
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
